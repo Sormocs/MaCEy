@@ -4,15 +4,15 @@ miembro(X,[_H|T]) :-  miembro(X,T).
 
 %Definicion de  las aeronaves
 
-aeronave("Cessna","Pequeña").
-aeronave("Beechcraft","Pequeña").
-aeronave("EmbraerPhenom","Pequeña").
-aeronave("Boing717","Mediana").
-aeronave("Embraer190","Mediana").
-aeronave("AirBusA220","Mediana").
-aeronave("Boing747","Grande").
-aeronave("AirBusA340","Grande").
-aeronave("AirbusA380","Grande").
+aeronave("cessna","pequeña").
+aeronave("beechcraft","pequeña").
+aeronave("embraerphenom","pequeña").
+aeronave("boing717","mediana").
+aeronave("embraer190","mediana").
+aeronave("airbusa220","mediana").
+aeronave("boing747","grande").
+aeronave("airbusa340","grande").
+aeronave("airbusa380","grande").
 
 %Definicion de pistas con la lista que corresponde a su disponibilidad.
 pista_1([]).
