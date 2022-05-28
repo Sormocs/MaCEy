@@ -20,27 +20,27 @@ pista_2_1([]).
 pista_2_2([]).
 pista_3([]).
 
-
+%Reglas que asignan la pista a la aeronave. Reciben la aeronave, hora y el tamano de la misma.
 asignar_pista_1(Aeronave,Hora,Tamano):-
     aeronave(Aeronave,Tamano),
     pista_1(X),
-    not(miembro(Hora,X)),concatenar(X,[Hora],Y),pista_1(Y),retract(pista_1(X)),assert(pista_1(Y)).
+    not(miembro(Hora,X)),concatenar(X,[Hora],Y).
 
 
 asignar_pista_2_1(Aeronave,Hora,Tamano):-
     aeronave(Aeronave,Tamano),
     pista_2_1(X),
-    not(miembro(Hora,X)),concatenar(X,[Hora],Y),pista_2_1(Y),retract(pista_2_1(X)),assert(pista_2_1(Y)).
+    not(miembro(Hora,X)),concatenar(X,[Hora],Y).
 
 asignar_pista_2_2(Aeronave,Hora,Tamano):-
     aeronave(Aeronave,Tamano),
     pista_2_2(X),
-    not(miembro(Hora,X)),concatenar(X,[Hora],Y),pista_2_2(Y),retract(pista_2_2(X)),assert(pista_2_2(Y)).
+    not(miembro(Hora,X)),concatenar(X,[Hora],Y).
 
 asignar_pista_3(Aeronave,Hora,Tamano):-
     aeronave(Aeronave,Tamano),
     pista_3(X),
-    not(miembro(Hora,X)),concatenar(X,[Hora],Y),pista_3(Y),retract(pista_3(X)),assert(pista_3(Y)).
+    not(miembro(Hora,X)),concatenar(X,[Hora],Y),pista_3(Y).
 
 
 %Definicion Emergencias
@@ -78,6 +78,67 @@ existe_matricula(Matricula):-
 existe_aeronave(Aeronave):-
     aeronave(Aeronave,_).
 
-concatena([],L,L).
-concatena([H|T],L2,[H|L3]) :- concatena(T,L2,L3).
+%Concatenar listas, recibe una lista y un elemento u otra lista y devuelve una lista con el elemento o lista concatenado.
+concatenar([],L,L).
+concatenar([H|T],L2,[H|L3]) :- concatenar(T,L2,L3).
+
+%Obtener la cabeza de la lista. Recibe una lista y devuelve la cabeza de la misma con la variable restante.
+cabeza(X,[X|_T]).
+%Obtener cola de la lista
+cola([_H|T],T).
+
+%Las reglas se encargan de verificar si la pista se encuentra ocupada a determinada hora.
+pista1_ocupada(Hora):-
+    pista_1(X),
+    miembro(Hora,X).
+
+pista_2_1_ocupada(Hora):-
+    pista_2_1(X),
+    miembro(Hora,X).
+
+pista_2_2_ocupada(Hora):-
+    pista_2_2(X),
+    miembro(Hora,X).
+
+pista_3_ocupada(Hora):-
+    pista_3(X),
+    miembro(Hora,X).
+
+%Las reglas siguientes se encargan de verificar la disponibilidad de las pistas y asignar una aeronave a una hora para la misma.
+%Reciben a la aeronave y una variable para la respuesta de pista asignada.
+verificarAeronave(N,C4,T):-
+    aeronave(N,"pequeña"), not(pista1_ocupada(C4)),asignar_pista_1(N,C4,"pequeña"), T= "Pista 1".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"pequeña"), not(pista_2_1_ocupada(C4)),asignar_pista_2_1(N,C4,"pequeña"), T= "Pista 2-1".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"pequeña"), not(pista_2_2_ocupada(C4)),asignar_pista_2_2(N,C4,"pequeña"), T= "Pista 2-2".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"pequeña"), not(pista_3_ocupada(C4)),asignar_pista_3(N,C4,"pequeña"), T= "Pista 3".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"mediana"), not(pista_2_1_ocupada(C4)),asignar_pista_2_1(N,C4,"mediana"), T= "Pista 2-1".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"mediana"), not(pista_2_2_ocupada(C4)),asignar_pista_2_2(N,Hora,"mediana"), T= "Pista 2-2".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"mediana"), not(pista_3_ocupada(C4)),asignar_pista_3(N,Hora,"mediana"), T= "Pista 2-2".
+
+verificarAeronave(N,C4,T):-
+    aeronave(N,"grande"), not(pista_3_ocupada(C4)),asignar_pista_3(N,Hora,"grande"), T= "Pista 3".
+
+%Regla de entrada de datos, recibe la llamada desde el chat principal.
+llamarABase(X,R):-
+    cabeza(C,X),
+    cola(X,Col),
+    cabeza(C2,Col),
+    cola(Col,Col2),
+    cabeza(C3,Col2),
+    cola(Col2,Col3),
+    cabeza(C4,Col3),
+    verificarAeronave(C3,C4,T),
+    R = ["Asignado",T,C2,"a las ",C4].
 
