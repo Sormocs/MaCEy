@@ -41,4 +41,3 @@ sintagma_verbal-->verbos,sintagma_nominal.
 sintagma_verbal-->verbos,conjunccion,adverbio.
 sintagma_verbal-->verbos,sintagma_nominal,verbos,sintagma_nominal.
 sintagma_verbal-->verbos,verbos.
-
